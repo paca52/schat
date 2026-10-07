@@ -1,0 +1,90 @@
+#include "../h/Socket.hpp"
+
+#include <iostream>
+#include <string>
+#include <poll.h>
+#include <unistd.h>
+
+constexpr uint16_t PORT = 8080;
+constexpr std::size_t BUFFER_SIZE = 1024;
+const char *localHost = "127.0.0.1";
+
+int main(void) {
+    try {
+        Socket socket;
+        socket.connect(localHost, PORT);
+
+        std::cout << "Connected to server!\n";
+        std::cout << "> " << std::flush;
+
+        pollfd fds[2];
+
+        fds[0] = {
+            socket.getFileDescriptor(),
+            POLLIN,
+            0
+        };
+
+        fds[1] = {
+            STDIN_FILENO,
+            POLLIN,
+            0
+        };
+
+        while (true) {
+            int ready = poll(fds, 2, -1);
+
+            if (ready == -1) {
+                perror("poll");
+                break;
+            }
+
+            // Message from server
+            if (fds[0].revents & POLLIN) {
+                char buffer[BUFFER_SIZE];
+
+                ssize_t bytes = socket.receive(buffer, sizeof(buffer));
+
+                if (bytes <= 0) {
+                    std::cout << "\nServer disconnected.\n";
+                    break;
+                }
+
+                std::cout << "\r"
+                          << std::string(buffer, bytes)
+                          << "> "
+                          << std::flush;
+            }
+
+            // User typed something
+            if (fds[1].revents & POLLIN) {
+                std::string message;
+
+                if (!std::getline(std::cin, message)) {
+                    break;
+                }
+
+                message += '\n';
+
+                socket.send(
+                    message.data(),
+                    message.size()
+                );
+
+                std::cout << "> " << std::flush;
+            }
+
+            // Connection errors
+            if (fds[0].revents & (POLLHUP | POLLERR | POLLNVAL)) {
+                std::cout << "\nServer connection lost.\n";
+                break;
+            }
+        }
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << '\n';
+        return 1;
+    }
+
+    return 0;
+}
