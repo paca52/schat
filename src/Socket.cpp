@@ -64,16 +64,16 @@ Socket Socket::accept() {
 
 bool Socket::send(const Message& msg) const{
     const char* buffer = reinterpret_cast<const char*>(&msg);
-    size_t bytes_left = sizeof(Message);
-    size_t total_sent = 0;
+    size_t bytesLeft = sizeof(Message);
+    size_t totalSent = 0;
 
-    while (bytes_left > 0) {
-        ssize_t sent = ::send(fd, buffer + total_sent, bytes_left, 0);
+    while (bytesLeft > 0) {
+        ssize_t sent = ::send(fd, buffer + totalSent, bytesLeft, 0);
         if (sent <= 0) {
             return false; // Error or socket closed
         }
-        total_sent += static_cast<size_t>(sent);
-        bytes_left -= static_cast<size_t>(sent);
+        totalSent += static_cast<size_t>(sent);
+        bytesLeft -= static_cast<size_t>(sent);
     }
     return true; // Successfully sent all sizeof(Message) bytes
 }

@@ -80,7 +80,7 @@ int main(void) {
             // Server/admin input
             if (fds[1].revents & POLLIN) {
                 Message message;
-                std::cin.clear();
+
                 if (!std::cin.getline(message.text, MAX_MESSAGE_LENGTH - 1)) {
                     std::cout << "Server input closed\n";
                     break;

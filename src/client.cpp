@@ -65,7 +65,7 @@ int main(void) {
             // User typed something
             if (fds[1].revents & POLLIN) {
                 Message message;
-                std::cin.clear();
+
                 if (!std::cin.getline(message.text, MAX_MESSAGE_LENGTH - 2)) {
                     break;
                 }
