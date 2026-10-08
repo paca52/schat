@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/paca/code/sockets/build",
+  "command": "/usr/sbin/c++  -I/home/paca/code/sockets/h -g -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/chat_common.dir/src/ChatInput.cpp.o -c /home/paca/code/sockets/src/ChatInput.cpp",
+  "file": "/home/paca/code/sockets/src/ChatInput.cpp",
+  "output": "CMakeFiles/chat_common.dir/src/ChatInput.cpp.o"
+},
+{
+  "directory": "/home/paca/code/sockets/build",
+  "command": "/usr/sbin/c++  -I/home/paca/code/sockets/h -g -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/chat_common.dir/src/ChatUI.cpp.o -c /home/paca/code/sockets/src/ChatUI.cpp",
+  "file": "/home/paca/code/sockets/src/ChatUI.cpp",
+  "output": "CMakeFiles/chat_common.dir/src/ChatUI.cpp.o"
+},
+{
+  "directory": "/home/paca/code/sockets/build",
+  "command": "/usr/sbin/c++  -I/home/paca/code/sockets/h -g -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/chat_common.dir/src/Socket.cpp.o -c /home/paca/code/sockets/src/Socket.cpp",
+  "file": "/home/paca/code/sockets/src/Socket.cpp",
+  "output": "CMakeFiles/chat_common.dir/src/Socket.cpp.o"
+},
+{
+  "directory": "/home/paca/code/sockets/build",
+  "command": "/usr/sbin/c++  -I/home/paca/code/sockets/h -g -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/chat_common.dir/src/Time.cpp.o -c /home/paca/code/sockets/src/Time.cpp",
+  "file": "/home/paca/code/sockets/src/Time.cpp",
+  "output": "CMakeFiles/chat_common.dir/src/Time.cpp.o"
+},
+{
+  "directory": "/home/paca/code/sockets/build",
+  "command": "/usr/sbin/c++  -I/home/paca/code/sockets/h -g -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/server.dir/src/server.cpp.o -c /home/paca/code/sockets/src/server.cpp",
+  "file": "/home/paca/code/sockets/src/server.cpp",
+  "output": "CMakeFiles/server.dir/src/server.cpp.o"
+},
+{
+  "directory": "/home/paca/code/sockets/build",
+  "command": "/usr/sbin/c++  -I/home/paca/code/sockets/h -g -std=c++17 -Wall -Wextra -Wpedantic -o CMakeFiles/client.dir/src/client.cpp.o -c /home/paca/code/sockets/src/client.cpp",
+  "file": "/home/paca/code/sockets/src/client.cpp",
+  "output": "CMakeFiles/client.dir/src/client.cpp.o"
+}
+]

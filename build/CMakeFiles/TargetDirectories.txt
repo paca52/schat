@@ -1,0 +1,5 @@
+/home/paca/code/sockets/build/CMakeFiles/chat_common.dir
+/home/paca/code/sockets/build/CMakeFiles/server.dir
+/home/paca/code/sockets/build/CMakeFiles/client.dir
+/home/paca/code/sockets/build/CMakeFiles/edit_cache.dir
+/home/paca/code/sockets/build/CMakeFiles/rebuild_cache.dir

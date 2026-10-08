@@ -1,0 +1,2 @@
+/usr/sbin/ar qc libchat_common.a CMakeFiles/chat_common.dir/src/ChatInput.cpp.o CMakeFiles/chat_common.dir/src/ChatUI.cpp.o CMakeFiles/chat_common.dir/src/Socket.cpp.o CMakeFiles/chat_common.dir/src/Time.cpp.o
+/usr/sbin/ranlib libchat_common.a
