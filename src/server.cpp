@@ -1,5 +1,6 @@
 #include "../h/Socket.hpp"
-
+#include "../h/Message.hpp"
+#include <cstring>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -8,14 +9,14 @@
 
 constexpr uint16_t PORT = 8080;
 constexpr std::size_t MAX_CLIENTS = 100;
-constexpr std::size_t BUFFER_SIZE = 1024;
+constexpr std::size_t BUFFER_SIZE = 2048;
 
-void broadcast(const std::vector<Socket>& clients, const std::string& message, int except_fd = -1) {
+void broadcast(const std::vector<Socket>& clients, const Message& msg, int except_fd = -1) {
     for (const Socket& client : clients) {
         if (client.getFileDescriptor() == except_fd)
             continue;
 
-        client.send(message.data(), message.size());
+        client.send(msg);
     }
 }
 
@@ -78,16 +79,18 @@ int main(void) {
 
             // Server/admin input
             if (fds[1].revents & POLLIN) {
-                std::string message;
-
-                if (!std::getline(std::cin, message)) {
+                Message message;
+                std::cin.clear();
+                if (!std::cin.getline(message.text, MAX_MESSAGE_LENGTH - 1)) {
                     std::cout << "Server input closed\n";
                     break;
                 }
 
-                message += '\n';
+                int len = strlen(message.text);
+                message.text[len] = '\n';
+                message.text[len + 1] = '\0';
 
-                std::cout << "[ADMIN] " << message;
+                std::cout << "[ADMIN] " << message.text;
 
                 broadcast(clients, message);
             }
@@ -109,7 +112,7 @@ int main(void) {
                 char buffer[BUFFER_SIZE];
 
                 ssize_t bytes =
-                    clients[i].receive(buffer, sizeof(buffer));
+                    clients[i].receive(buffer, sizeof(Message));
 
                 if (bytes <= 0) {
                     std::cout << "Client disconnected [fd = "
@@ -119,12 +122,13 @@ int main(void) {
                     continue;
                 }
 
-                std::string message(buffer, bytes);
+                Message message;
+                Socket::deserialize(message, buffer);
 
                 std::cout << "[CLIENT "
                     << clients[i].getFileDescriptor()
                     << "] "
-                    << message;
+                    << message.text;
 
                 broadcast(
                     clients,

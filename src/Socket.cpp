@@ -1,4 +1,6 @@
 #include "../h/Socket.hpp"
+#include "../h/Message.hpp"
+#include <cstring>
 #include <netinet/in.h>
 #include <stdexcept>
 #include <sys/socket.h>
@@ -59,8 +61,21 @@ Socket Socket::accept() {
     return Socket(clientFD);
 }
 
-ssize_t Socket::send(const void *buffer, size_t size) const {
-    return ::send(fd, buffer, size, 0);
+
+bool Socket::send(const Message& msg) const{
+    const char* buffer = reinterpret_cast<const char*>(&msg);
+    size_t bytes_left = sizeof(Message);
+    size_t total_sent = 0;
+
+    while (bytes_left > 0) {
+        ssize_t sent = ::send(fd, buffer + total_sent, bytes_left, 0);
+        if (sent <= 0) {
+            return false; // Error or socket closed
+        }
+        total_sent += static_cast<size_t>(sent);
+        bytes_left -= static_cast<size_t>(sent);
+    }
+    return true; // Successfully sent all sizeof(Message) bytes
 }
 
 ssize_t Socket::receive(void *buffer, size_t size) {
