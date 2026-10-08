@@ -3,7 +3,9 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <unistd.h>
+#include "Message.hpp"
 
 class Socket {
 public:
@@ -25,8 +27,11 @@ public:
 
     Socket accept();
 
-    ssize_t send(const void *buffer, size_t size) const;
+    bool send(const Message& msg) const;
     ssize_t receive(void *buffer, size_t size);
+    static void deserialize(Message& msg, char* buffer){
+        std::memcpy(&msg, buffer, sizeof(Message));
+    };
 
     void close();
 

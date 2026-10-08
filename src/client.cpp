@@ -1,13 +1,16 @@
 #include "../h/Socket.hpp"
+#include "../h/Message.hpp"
 
+#include <cstring>
 #include <iostream>
 #include <string>
 #include <poll.h>
 #include <unistd.h>
 
 constexpr uint16_t PORT = 8080;
-constexpr std::size_t BUFFER_SIZE = 1024;
+constexpr std::size_t BUFFER_SIZE = 2048;
 const char *localHost = "127.0.0.1";
+
 
 int main(void) {
     try {
@@ -43,33 +46,35 @@ int main(void) {
             if (fds[0].revents & POLLIN) {
                 char buffer[BUFFER_SIZE];
 
-                ssize_t bytes = socket.receive(buffer, sizeof(buffer));
+                ssize_t bytes = socket.receive(buffer, sizeof(Message));
 
                 if (bytes <= 0) {
                     std::cout << "\nServer disconnected.\n";
                     break;
                 }
+                
+                Message message;
+                Socket::deserialize(message, buffer);
 
                 std::cout << "\r"
-                          << std::string(buffer, bytes)
+                          << message.text
                           << "> "
                           << std::flush;
             }
 
             // User typed something
             if (fds[1].revents & POLLIN) {
-                std::string message;
+                Message message;
 
-                if (!std::getline(std::cin, message)) {
+                if (!std::cin.getline(message.text, MAX_MESSAGE_LENGTH - 2)) {
                     break;
                 }
 
-                message += '\n';
+                int len = strlen(message.text);
+                message.text[len] = '\n';
+                message.text[len + 1] = '\0';
 
-                socket.send(
-                    message.data(),
-                    message.size()
-                );
+                socket.send(message);
 
                 std::cout << "> " << std::flush;
             }
