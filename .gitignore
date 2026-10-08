@@ -1,0 +1,16 @@
+# Build output
+build/
+
+# clangd / IDE
+.cache/
+compile_commands.json
+.vscode/
+.idea/
+
+# Compiled objects and binaries
+*.o
+*.a
+*.out
+
+# OS junk
+.DS_Store

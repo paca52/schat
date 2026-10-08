@@ -11,7 +11,7 @@ Socket::Socket() {
     fd = ::socket(AF_INET, SOCK_STREAM, 0);
     if (fd == -1) {
         throw std::runtime_error("Failed to create a socket");
-}
+    }
 }
 
 Socket::Socket(int fd) : fd(fd) { }
